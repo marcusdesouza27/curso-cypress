@@ -23,3 +23,23 @@ Configurações básicas:
        - "cypress:open": "cypress open"
        - rode o comando: .\node_modules\.bin\cypress open
     - será carregado um console com os exemplos e será criada a pasta ./cypress
+
+    ************************************************
+
+    Dicas úteis:
+
+    Declarar um teste:
+    - O teste é iniciado com "it"
+    
+    Variáveis:
+        - let: variáveis que podem ser mudadas
+        - const: variáveis que não são alteradas
+
+    declaração de funções:
+        - function <nomefunção> (<parâmetros>){}
+
+    - Arrow function:
+            sintaxe: const <nomefunção> = (<parâmetros>) => <operadores da função>
+            - Quando o operador está imediatamente após o "=>" já fica implícito o "return"
+    
+    Obs.: Quando a função só tiver um parâmetro, não é necessário colocar entre parêntesis
