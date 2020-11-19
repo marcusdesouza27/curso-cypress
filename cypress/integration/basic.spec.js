@@ -5,9 +5,10 @@
 
         //  const tittle = cy.title()
         //  console.log(tittle);
-
+        cy.pause()
+        
         cy.title().should('be.equal', 'Campo de Treinamento')
-        cy.title().should('contain', 'Treinamento')
+        cy.title().debug().should('contain', 'Treinamento')
 
         cy.title()
             .should('be.equal', 'Campo de Treinamento')
@@ -17,7 +18,7 @@
         //TODO escrever o log em um campo de texto
     })
 
-    it.only('Shoud find and interact with an element', () => {
+    it('Shoud find and interact with an element', () => {
         cy.visit('https://www.wcaquino.me/cypress/componentes.html')
 
         // cy.get('NAO EXISTE')

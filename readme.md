@@ -57,3 +57,12 @@ Configurações básicas:
     - Podem ser colocados para o programa fazer comparações
     - Caso tenham vários asserts, falhando um, já falha todo o teste
     - Pode ser colocada a provável mensagem de falha, após o parâmetro a ser comparado
+
+    - Inspecionar elementos
+        - Na janela ativa do sistema carregado pelo cypress já existe um object inspector. Basta clicar para encontrar o locator dos elementos
+        - O comando/identificador aparece no campo superior e pode ser copiado para o clippboard e colado direto no código
+
+    - Debugar código
+        - Podem ser usados os comandos '.debug' ou 'pause'.
+            - Com o debug é criado um breakpoint. Os dados referentes à execução são impressos no console. A execução será pausada pelo debug. O gerenciamento do debugger não é totalmente do cypress.
+            - com o pause a execução pode ser feita step by step para verificar os resultados de cada ação do teste. O gerenciamento do avanço é feito 100% pelo cypress.
