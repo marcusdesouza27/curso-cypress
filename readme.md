@@ -28,10 +28,7 @@ Configurações básicas:
 
     Dicas úteis:
 
-    Declarar um teste:
-    - O teste é iniciado com "it"
-    
-    Variáveis:
+      Variáveis:
         - let: variáveis que podem ser mudadas
         - const: variáveis que não são alteradas
 
@@ -43,3 +40,20 @@ Configurações básicas:
             - Quando o operador está imediatamente após o "=>" já fica implícito o "return"
     
     Obs.: Quando a função só tiver um parâmetro, não é necessário colocar entre parêntesis
+
+    - Declarar um teste:
+        - O teste é iniciado com "it"
+    
+    - Agrupamento de testes:
+        - O agrupamento de testes é efetuado com o describe
+        - Pode ser declarado um Describe dentro de outro, para agrupar testes mais específicos, se necessário
+    
+    - Ignorando testes 
+        - Para Ignorar um ou mais testes, pode ser usada a marcação ".skip" após o it/declare
+        - Para executar apenas um único teste, utilize a marcação ".only" após o it/declare
+        - Caso haja mais de um "only", o último será considerado na execução.
+    
+   - Asserts
+    - Podem ser colocados para o programa fazer comparações
+    - Caso tenham vários asserts, falhando um, já falha todo o teste
+    - Pode ser colocada a provável mensagem de falha, após o parâmetro a ser comparado
