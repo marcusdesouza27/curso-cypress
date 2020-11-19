@@ -1,6 +1,6 @@
  /// <reference types="cypress" />
  describe('Cypress Basics', () => {
-     it('"Acessar página e validar um assert no título', () => {
+     it('Acessar página e validar um assert no título', () => {
          cy.visit('https://www.wcaquino.me/cypress/componentes.html')
 
         //  const tittle = cy.title()
@@ -15,5 +15,18 @@
 
         //TODO imprimir o log no console
         //TODO escrever o log em um campo de texto
-     })
+    })
+
+    it.only('Shoud find and interact with an element', () => {
+        cy.visit('https://www.wcaquino.me/cypress/componentes.html')
+
+        // cy.get('NAO EXISTE')
+        // cy.get('#buttonSimple').click()
+        // cy.get('#buttonSimple').should('have.value', 'Obrigado!')
+        cy.get('#buttonSimple')
+            .should('have.value', 'Clique Me!')
+            .click()
+            .should('have.value', 'Obrigado!')
+    })
+ 
  })
