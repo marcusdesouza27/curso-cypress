@@ -5,16 +5,26 @@
 
         //  const tittle = cy.title()
         //  console.log(tittle);
-        cy.pause()
+        // cy.pause()
         
         cy.title().should('be.equal', 'Campo de Treinamento')
-        cy.title().debug().should('contain', 'Treinamento')
+        cy.title().should('contain', 'Treinamento')
 
         cy.title()
             .should('be.equal', 'Campo de Treinamento')
             .and('contain', 'Treinamento')
 
+        
         //TODO imprimir o log no console
+        // Usando o "then" da promise 
+        cy.title().then(title => {
+            console.log(title)
+        })
+
+        // Usando o "should" da promise
+        cy.title().should(title => {
+            console.log(title)
+        })
         //TODO escrever o log em um campo de texto
     })
 

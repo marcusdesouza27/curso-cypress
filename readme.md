@@ -74,3 +74,29 @@ Configurações básicas:
     - Hooks
         - Before all [before(() => {})]  --> O que deve ser executado antes de TODOS os testes
         - Before each [beforeEach(() => {})]  --> O que deve ser executado antes de CADA teste
+
+    -Retry
+        - Cuidado com o encadeamento do cy.get.
+        Quando há um encadeamento, na maioria das vezes retorna o mesmo elemento. Nesse exemplo vai retornar null pq já não existia na linha anterio.
+        - Nem sempre o retry vai ser efetivo. Quando o elemento altera o html, por vezes o retry não vai funcionar então deve haver tratamento no código do teste para satisfazer a condição desejada (exemplo: repetir o click em um botão)
+
+    - Find
+        - Não recomendado para listas, quando você precisa pegar o segundo ou outro elemento. Nesse caso é melhor dar um cy.get no elemento e um should('contain') na lista para encontrar o valor que você precisa.
+
+    - Wait e TimeOut
+        - Para setar o timeOut no teste, basta adicionar o parâmetro {timeout: <milissegundos>}
+        - No arquivo de configuração "cypress.json" você pode configurar o timeOut para todos os testes
+            - Para isso, basta incluir a chave: "defaultCommandTimeout": <milissegundos>
+
+        -Para o wait a aplicação é "congelada" por x segundos. Não é recomendado, porque a espera ocorre com o elemento sendo encontrado ou não. Gerando uma demora fixa na execução do teste
+
+    - Then x Should (Diferença)
+        - Then -
+            - Aguarda o fim da execução do get para então executar a função
+            - O return pode ser alterado
+            - Para blocos que tem busca de outro elemento é recomendado usar o then.
+
+        - Should -
+            - Executa ao mesmo tempo que o get está sendo finalizado
+            - Sempre vai retornar o mesmo elemento que foi capturado. Ou seja, ele ignora um return dentro do script que poderia alterar o valor
+            - Para blocos que tem busca de outro elemento NÃO é recomendado usar o should porque vai entrar em um loop de retentativas.
