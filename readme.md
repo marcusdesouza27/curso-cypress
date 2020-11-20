@@ -70,3 +70,7 @@ Configurações básicas:
     - Formas de busca
         - cy.get
         - cy.contais
+
+    - Hooks
+        - Before all [before(() => {})]  --> O que deve ser executado antes de TODOS os testes
+        - Before each [beforeEach(() => {})]  --> O que deve ser executado antes de CADA teste
