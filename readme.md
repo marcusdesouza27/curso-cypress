@@ -66,3 +66,7 @@ Configurações básicas:
         - Podem ser usados os comandos '.debug' ou 'pause'.
             - Com o debug é criado um breakpoint. Os dados referentes à execução são impressos no console. A execução será pausada pelo debug. O gerenciamento do debugger não é totalmente do cypress.
             - com o pause a execução pode ser feita step by step para verificar os resultados de cada ação do teste. O gerenciamento do avanço é feito 100% pelo cypress.
+
+    - Formas de busca
+        - cy.get
+        - cy.contais
