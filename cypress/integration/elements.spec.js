@@ -27,7 +27,7 @@ describe('Work with basic elements', () => {
         cy.get('#resultado').should('have.text', 'Voltou!')
     })
 
-    it.only('Text fields', () =>{
+    it('Text fields', () =>{
         cy.get('#formNome')
             .type('Cypress Test')
             .should('have.value', 'Cypress Test')
@@ -53,4 +53,24 @@ describe('Work with basic elements', () => {
             .type('Erro{selectall}Acerto')
             .should('have.value', 'Acerto')
     })
+
+    it('RadioButton', ()=> {
+        cy.get('#formSexoFem')
+            .click()
+            .should('be.checked')
+        cy.get('#formSexoMasc').should('not.be.checked')
+
+        cy.get("[name=formSexo]").should('have.length', '2')
+    })
+
+    it('Checkbox', () =>{
+        cy.get('#formComidaVegetariana')
+            .check()
+            .should('be.checked')
+
+        cy.get("[name=formComidaFavorita]").click({multiple: true})
+        cy.get('#formComidaPizza').should('be.checked')
+        cy.get('#formComidaVegetariana').should('not.be.checked')
+    })
+
 })
