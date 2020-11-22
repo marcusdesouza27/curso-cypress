@@ -18,7 +18,12 @@ describe('Work with basic elements', () => {
         cy.get('#tabelaUsuarios tr:contains(\'Doutorado\'):eq(0) td:eq(6)').type('por linha')
     })
 
-    it('using xpath', () => {
-        cy.xpath('//input')
+    it.only('using xpath', () => {
+        cy.xpath("(//input[@type='button'][@value='Clique aqui'])[3]") // Não muito recomendávelpq os as posições na tab podem  variar
+        cy.xpath('//input[contains(@onclick,"Francisco")]')
+        cy.xpath('//table[@id="tabelaUsuarios"]//td[contains(.,"Francisco")]/..//input[@type="text"]')
+        cy.xpath('(//table[@id="tabelaUsuarios"]//td[contains(.,\'Doutorado\')])[2]/..//input[@type="checkbox"]')
+        cy.xpath('(//table[@id="tabelaUsuarios"]//td[contains(.,\'Doutorado\')])[2]/..//input[@type="checkbox"]')
+        cy.xpath('//td[contains(.,"Usuario A")]/following-sibling::td[contains(.,"Mestrado")]/..//input[(@type="text")]').type("TEST")
     })
 })
