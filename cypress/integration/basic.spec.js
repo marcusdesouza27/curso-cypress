@@ -1,21 +1,48 @@
  /// <reference types="cypress" />
  describe('Cypress Basics', () => {
-     it('Acessar página e validar um assert no título', () => {
+     it.only('Acessar página e validar um assert no título', () => {
          cy.visit('https://www.wcaquino.me/cypress/componentes.html')
 
-        //  const tittle = cy.title()
-        //  console.log(tittle);
-        cy.pause()
+         const tittle = cy.title()
+         console.log(tittle);
         
         cy.title().should('be.equal', 'Campo de Treinamento')
-        cy.title().debug().should('contain', 'Treinamento')
+        cy.title().should('contain', 'Treinamento')
 
         cy.title()
             .should('be.equal', 'Campo de Treinamento')
             .and('contain', 'Treinamento')
 
+        
         //TODO imprimir o log no console
-        //TODO escrever o log em um campo de texto
+        // Usando o "then" da promise 
+        cy.title().then(title => {
+            console.log(title)
+        })
+
+        // Usando o "should" da promise
+        cy.title().should(title => {
+            console.log(title)
+        })
+
+        // TODO escrever o log em um campo de texto
+        let syncTitle
+
+        cy.title().then(title => {
+            console.log(title)
+
+            cy.get('#formNome').type(title)
+
+            syncTitle = title
+        })
+
+        cy.get('[data-cy=dataSobrenome]').then($el => {
+            $el.val(syncTitle)
+        })
+
+        cy.get('#elementosForm\\:sugestoes').then($el => {
+            cy.wrap($el).type(syncTitle)
+        })
     })
 
     it('Shoud find and interact with an element', () => {
