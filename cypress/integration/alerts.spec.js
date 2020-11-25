@@ -93,7 +93,7 @@ describe('Work with alerts', () => {
 
         cy.get('#formCadastrar').click()
         .then(() => 
-            expect(stub.getCall(2)).to.be.calledWithNew('Sexo eh obrigatorio'))
+            expect(stub.getCall(2)).to.be.calledWith('Sexo eh obrigatorio'))
 
         cy.get('#formSexoMasc').click()
         cy.get('#formCadastrar').click()
