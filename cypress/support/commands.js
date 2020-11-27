@@ -24,14 +24,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+// const { curry } = require("cypress/types/lodash")
+
 Cypress.Commands.add('ClickAlert', (locator, message) => {
-        cy.get(locator).click()
+    cy.get(locator).click()
 
-        cy.on('window:alert', msg => {
-            console.log(msg)
+    cy.on('window:alert', msg => {
+        console.log(msg)
 
-            expect(msg).to.be.equal(message)
-        })
+        expect(msg).to.be.equal(message)
+    })
 })
 
 Cypress.Commands.add('ConfirmPopup', (ConfirmAlert, AlertPopup, locator) => {
@@ -42,4 +44,20 @@ Cypress.Commands.add('ConfirmPopup', (ConfirmAlert, AlertPopup, locator) => {
         expect(msg).to.be.equal(AlertPopup)
     })
     cy.get(locator).click()
+})
+
+Cypress.Commands.add('BarrigaLogin', (user, password) => {
+    cy.fixture('login').as('barriga').then(() => {
+        cy.get('.input-group > .form-control').type(user)
+        cy.get(':nth-child(2) > .form-control').type(password)
+        cy.get('.btn').click()
+        
+        cy.get('.toast-message').its('show')
+        cy.get('.toast-close-button').click()
+    })
+})
+
+Cypress.Commands.add('BarrigaPopUp', ()=> {
+    cy.get('.toast-message').its('show')
+    cy.get('.toast-close-button').click()
 })
