@@ -6,51 +6,53 @@
 // 5- Cálculo de Saldo
 // 6- Remover Movimentação
 
+
+
 /// <reference types="cypress" />
 
 describe('Testes funcionais', () => {
-    beforeEach(() => {
-        cy.visit('https://barrigareact.wcaquino.me')
-    })
+    beforeEach(function () {
+        cy.visit('https://barrigareact.wcaquino.me/')
 
-    it('Should create an account', function () {
         cy.fixture('login').as('barriga').then(() => {
             cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
         })
+        cy.BarrigaPopUp('Bem vindo')
+    })
 
-        cy.get('a[class="nav-link dropdown-toggle"]').click()
-        cy.get('[href="/contas"]').click()
-        cy.get('h2').should('have.text', 'Contas')
-        cy.get('.form-control').type('Conta Cypress')
-        cy.get('.btn > .far').click()
+    it.only('Should create an account', () => {
+        cy.BarrigaReset(). then(() => {
+            cy.get('a[class="nav-link dropdown-toggle"]').click()
+            cy.get('[href="/contas"]').click()
+            cy.get('h2').should('have.text', 'Contas')
+            cy.get('.form-control').type('Conta Cypress')
+            cy.get('.btn > .far').click()
+    
+            cy.xpath('//td[contains(., "Conta Cypress")]').should('contain.text', 'Conta Cypress')
+    
+            cy.BarrigaPopUp('Conta inserida com sucesso')
+        })
 
-        cy.xpath('//td[contains(., "Conta Cypress")]').should('contain.text', 'Conta Cypress')
-
-        cy.BarrigaPopUp()
+       
 
     })
 
-    it('Should update an account', function() {
-        cy.fixture('login').as('barriga').then(() => {
-            cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        })
+    it.only('Should update an account', function() {
 
         cy.get('a[class="nav-link dropdown-toggle"]').click()
         cy.get('[href="/contas"]').click()
         cy.get('h2').should('have.text', 'Contas')
 
         cy.xpath('//td[contains(., "Conta Cypress")]/following-sibling::td/i[@class="far fa-edit"]').click()
-        cy.get('.form-control').type('{del}{selectall}{backspace}')
+        // cy.get('.form-control').type('{del}{selectall}{backspace}')
+        cy.get('.form-control').clear()
         cy.get('.form-control').type('Conta Cypress Update')
         cy.get('.btn > .far').click()
 
-        cy.BarrigaPopUp()
+        cy.BarrigaPopUp('Conta atualizada com sucesso')
     })
 
     it('Should not create an account with same name', function() {
-        cy.fixture('login').as('barriga').then(() => {
-            cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        })
 
         cy.get('a[class="nav-link dropdown-toggle"]').click()
         cy.get('[href="/contas"]').click()
@@ -58,13 +60,11 @@ describe('Testes funcionais', () => {
         cy.get('.form-control').type('Conta Cypress Update')
         cy.get('.btn > .far').click()
 
-        cy.BarrigaPopUp()
+        cy.BarrigaPopUp('')
     })
 
     it('Should create a transaction', function() {
-        cy.fixture('login').as('barriga').then(() => {
-            cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        })
+        
         cy.get(':nth-child(2) > .nav-link > .fas').click()
         cy.get('#descricao').type('Conta Teste')
         cy.get('.col-4 > .form-control').type(1000)
@@ -78,18 +78,18 @@ describe('Testes funcionais', () => {
     })
 
     it('Should get balance', function() {
-        cy.fixture('login').as('barriga').then(() => {
-            cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        })
+        // cy.fixture('login').as('barriga').then(() => {
+        //     cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
+        // })
 
         // cy.BarrigaPopUp()
 
     })
 
     it('Should remove a transaction', function() {
-        cy.fixture('login').as('barriga').then(() => {
-            cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        })
+        // cy.fixture('login').as('barriga').then(() => {
+        //     cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
+        // })
         
         cy.get(':nth-child(3) > .nav-link > .fas').click()
         cy.xpath("//body/div[@id='root']/div[1]/div[1]/div[2]/div[2]/li[1]/div[1]/div[2]/i[1]").click()

@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cypress": "^5.6.0",
     "cypress-xpath": "^1.6.1"
   },
   "devDependencies": {
+    "cypress": "^6.0.0",
     "cypress-fill-command": "^0.1.0"
   }
 }

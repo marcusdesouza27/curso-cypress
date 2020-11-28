@@ -51,13 +51,25 @@ Cypress.Commands.add('BarrigaLogin', (user, password) => {
         cy.get('.input-group > .form-control').type(user)
         cy.get(':nth-child(2) > .form-control').type(password)
         cy.get('.btn').click()
-        
-        cy.get('.toast-message').its('show')
+
         cy.get('.toast-close-button').click()
     })
 })
+Cypress.Commands.add('BarrigaReset', () => {
+    cy.get('[data-test=menu-settings]').click()
+    cy.get('[href="/reset"]').click()
 
-Cypress.Commands.add('BarrigaPopUp', ()=> {
-    cy.get('.toast-message').its('show')
+    cy.get('.toast-message').should('contain', 'Dados resetados com sucesso')
+    cy.get('.toast-close-button').click()
+})
+
+Cypress.Commands.add('BarrigaPopUp', (popmessage) => {
+    cy.get('.toast-message')
+        .should('exist')
+        .and('contain', popmessage)
+        cy.get('.toast-close-button').click()
+})
+
+Cypress.Commands.add('BarrigaClosePop', () => {
     cy.get('.toast-close-button').click()
 })
