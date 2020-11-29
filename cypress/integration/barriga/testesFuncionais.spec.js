@@ -70,29 +70,19 @@ describe('Testes funcionais', () => {
 
         cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso')
 
-        cy.xpath("//span[contains(., 'Conta Test')]").should('contain.text', 'Conta Teste')
+        cy.xpath("(//span[contains(., 'Conta Test')])[1]").should('contain.text', 'Conta Teste')
     })
 
     it('Should get balance', function () {
-        // cy.fixture('login').as('barriga').then(() => {
-        //     cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        // })
-
-        // cy.get(loc.MESSAGE).should('contain',)
+     
 
     })
 
     it('Should remove a transaction', function () {
-        // cy.fixture('login').as('barriga').then(() => {
-        //     cy.BarrigaLogin(this.barriga.login, this.barriga.pwd)
-        // })
 
         cy.get(':nth-child(3) > .nav-link > .fas').click()
         cy.xpath("//body/div[@id='root']/div[1]/div[1]/div[2]/div[2]/li[1]/div[1]/div[2]/i[1]").click()
-
-        // cy.get(':nth-child(3) > .nav-link > .fas').click()
-        // cy.get('.col > .far').click();
-
+        
         cy.get(loc.MESSAGE).should('contain',)
 
     })
