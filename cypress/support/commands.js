@@ -46,28 +46,28 @@ Cypress.Commands.add('ConfirmPopup', (ConfirmAlert, AlertPopup, locator) => {
     cy.get(locator).click()
 })
 
-Cypress.Commands.add('BarrigaLogin', (user, password) => {
+Cypress.Commands.add('BarrigaLogin', (elUser, elPwd, elBtn, user, password) => {
     cy.fixture('login').as('barriga').then(() => {
-        cy.get('.input-group > .form-control').type(user)
-        cy.get(':nth-child(2) > .form-control').type(password)
-        cy.get('.btn').click()
+        cy.get(elUser).type(user)
+        cy.get(elPwd).type(password)
+        cy.get(elBtn).click()
 
         cy.get('.toast-close-button').click()
     })
 })
-Cypress.Commands.add('BarrigaReset', () => {
+Cypress.Commands.add('BarrigaReset', (idpopup) => {
     cy.get('[data-test=menu-settings]').click()
     cy.get('[href="/reset"]').click()
 
-    cy.get('.toast-message').should('contain', 'Dados resetados com sucesso')
-    cy.get('.toast-close-button').click()
+    cy.get(idpopup).should('contain', 'Dados resetados com sucesso')
+    // cy.get('.toast-close-button').click()
 })
 
-Cypress.Commands.add('BarrigaPopUp', (popmessage) => {
-    cy.get('.toast-message')
+Cypress.Commands.add('BarrigaPopUp', (idpopup, popmessage) => {
+    cy.get(idpopup)
         .should('exist')
         .and('contain', popmessage)
-        cy.get('.toast-close-button').click()
+        // cy.get('.toast-close-button').click()
 })
 
 Cypress.Commands.add('BarrigaClosePop', () => {
