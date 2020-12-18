@@ -23,7 +23,7 @@ describe('Dinamic Tests', () => {
             })
         })
     })
-    it.only(`Testes selecionando todas com each`, function () {
+    it(`Testes selecionando todas com each`, function () {
         cy.fixture('userData').as('usuario').then(() => {
             cy.get('#formNome').type(this.usuario.nome)
             cy.get('#formSobrenome').type(this.usuario.sobrenome)

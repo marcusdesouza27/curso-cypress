@@ -16,7 +16,7 @@ Configurações básicas:
         - pakage-lock.json
         
 - Para carregar um arquivo de exemplos do cypress:
-    -  .\node_modules\.bin\cypress open
+    -  npm run cypress:open
    
    ou (Quando der erros - caso do windows)
     - Configure o pakage.json incluindo a linha na Sessão scripts: 
