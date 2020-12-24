@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cy:open": "npx cypress open",
+    "cy:run": "npx cypress run"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +16,7 @@
     "cypress-xpath": "^1.6.1"
   },
   "devDependencies": {
-    "cypress": "^6.0.0",
+    "cypress": "^6.1.0",
     "cypress-fill-command": "^0.1.0"
   }
 }
