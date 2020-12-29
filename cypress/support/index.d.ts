@@ -3,12 +3,13 @@
 declare namespace Cypress {
     interface Chainable<Subject> {
       /**
-       * Fazer login no BarrigaReact
+       * 
        * @example
        * cy.BarrigaLogin()
        * 
        */
       BarrigaLogin(): Chainable<any>
-  
+      AcessaMenuConta(): Chainable<any>
+      InserirConta(): Chainable<any>
     }
   }
