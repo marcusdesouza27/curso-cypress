@@ -18,5 +18,6 @@
   "devDependencies": {
     "cypress": "^6.1.0",
     "cypress-fill-command": "^0.1.0"
+
   }
 }
