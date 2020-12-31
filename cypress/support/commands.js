@@ -85,3 +85,14 @@ Cypress.Commands.add('InserirConta', (conta) => {
     cy.get(loc.CONTAS.INPUT_NAME).type(conta)
     cy.get(loc.CONTAS.BTN_SAVE).click()
 })
+
+Cypress.Commands.add('AddMov', () => {
+    cy.get(loc.MENU.ICON_HAND$).click();
+    cy.get(loc.MOVEMENT.NAME).type('Movimento a confirmar');
+    cy.get(loc.MOVEMENT.AMOUNT).type(10000);
+    cy.get(loc.MOVEMENT.ENVOLVIDO).type('MHCS');
+    cy.get(loc.MOVEMENT.SEL_ACCOUNT).select('Conta para extrato');
+    cy.get(loc.MOVEMENT.BTN_SAVE).click();
+    cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso');
+    cy.xpath(loc.MOVEMENT.TEST_MOVIMENT('Movimento a confirmar')).should('contain.text', 'Movimento a confirmar');
+})
