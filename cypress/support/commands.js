@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 // const { curry } = require("cypress/types/lodash")
+import loc from "./locators"
 
 Cypress.Commands.add('ClickAlert', (locator, message) => {
     cy.get(locator).click()
@@ -56,8 +57,8 @@ Cypress.Commands.add('BarrigaLogin', (elUser, elPwd, elBtn, user, password) => {
     })
 })
 Cypress.Commands.add('BarrigaReset', (idpopup) => {
-    cy.get('[data-test=menu-settings]').click()
-    cy.get('[href="/reset"]').click()
+    cy.get(loc.MENU.SETTINGS).click()
+    cy.get(loc.MENU.RESET).click()
 
     cy.get(idpopup).should('contain', 'Dados resetados com sucesso')
     // cy.get('.toast-close-button').click()
@@ -67,9 +68,31 @@ Cypress.Commands.add('BarrigaPopUp', (idpopup, popmessage) => {
     cy.get(idpopup)
         .should('exist')
         .and('contain', popmessage)
-        // cy.get('.toast-close-button').click()
+    // cy.get('.toast-close-button').click()
 })
 
 Cypress.Commands.add('BarrigaClosePop', () => {
     cy.get('.toast-close-button').click()
+})
+
+Cypress.Commands.add('AcessaMenuConta', () => {
+    cy.get(loc.MENU.BTN_OPTIONS).click()
+    cy.get(loc.MENU.OPT_CONTAS).click()
+    cy.get(loc.CONTAS.TITLE).should('have.text', 'Contas')
+})
+
+Cypress.Commands.add('InserirConta', (conta) => {
+    cy.get(loc.CONTAS.INPUT_NAME).type(conta)
+    cy.get(loc.CONTAS.BTN_SAVE).click()
+})
+
+Cypress.Commands.add('AddMov', () => {
+    cy.get(loc.MENU.ICON_HAND$).click();
+    cy.get(loc.MOVEMENT.NAME).type('Movimento a confirmar');
+    cy.get(loc.MOVEMENT.AMOUNT).type(10000);
+    cy.get(loc.MOVEMENT.ENVOLVIDO).type('MHCS');
+    cy.get(loc.MOVEMENT.SEL_ACCOUNT).select('Conta para extrato');
+    cy.get(loc.MOVEMENT.BTN_SAVE).click();
+    cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso');
+    cy.xpath(loc.MOVEMENT.TEST_MOVIMENT('Movimento a confirmar')).should('contain.text', 'Movimento a confirmar');
 })

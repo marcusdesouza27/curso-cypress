@@ -4,86 +4,71 @@ import loc from '../../support/locators'
 
 describe('Testes funcionais', () => {
     before(function () {
-        cy.visit('https://barrigareact.wcaquino.me/')
+        cy.visit('/')
+        cy.fixture('login').then((user) => {
+            cy.BarrigaLogin(loc.LOGIN.INPUT_USER, loc.LOGIN.INPUT_PASSWORD, loc.LOGIN.BTN_LOGIN, user.login, user.pwd)
+            cy.get(loc.MESSAGE).should('contain', 'Bem vindo');
+        });
+    })
 
-        cy.fixture('login').as('barriga').then(() => {
-
-            cy.get(loc.LOGIN.INPUT_USER).type(this.barriga.login)
-            cy.get(loc.LOGIN.INPUT_PASSWORD).type(this.barriga.pwd)
-            cy.get(loc.LOGIN.BTN_LOGIN).click()
-
-            cy.get(loc.MESSAGE).should('contain', 'Bem vindo')
-
-
-        })
+    beforeEach(() => {
+        cy.get(loc.MENU.HOME).click();
+        cy.BarrigaReset(loc.MESSAGE);
     })
 
     it('Should create an account', () => {
-        cy.BarrigaReset(loc.MESSAGE).then(() => {
-            cy.get(loc.HEADER.BTN_OPTIONS).click()
-            cy.get(loc.HEADER.OPT_CONTAS).click()
-            cy.get(loc.CONTAS.TITLE).should('have.text', 'Contas')
-            cy.get(loc.CONTAS.INPUT_NAME).type('Conta Cypress')
-            cy.get(loc.CONTAS.BTN_SAVE).click()
-
-            cy.xpath('//td[contains(., "Conta Cypress")]').should('contain.text', 'Conta Cypress')
-
-            cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso')
-        })
+        cy.AcessaMenuConta();
+        cy.InserirConta('Conta Cypress');
+        cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso')
 
     })
 
     it('Should update an account', function () {
-
-        cy.get(loc.HEADER.BTN_OPTIONS).click()
-        cy.get(loc.HEADER.OPT_CONTAS).click()
-        cy.get(loc.CONTAS.TITLE).should('have.text', 'Contas')
-
-        cy.xpath('//td[contains(., "Conta Cypress")]/following-sibling::td/i[@class="far fa-edit"]').click()
+        cy.AcessaMenuConta();
+        cy.xpath('//td[contains(., "Conta para alterar")]/following-sibling::td/i[@class="far fa-edit"]').click()
         cy.get(loc.CONTAS.INPUT_NAME).clear()
         cy.get(loc.CONTAS.INPUT_NAME).type('Conta Cypress Update')
         cy.get(loc.CONTAS.BTN_SAVE).click()
-
         cy.get(loc.MESSAGE).should('contain', 'Conta atualizada com sucesso')
     })
 
     it('Should not create an account with same name', function () {
-
-        cy.get(loc.HEADER.BTN_OPTIONS).click()
-        cy.get(loc.HEADER.OPT_CONTAS).click()
-        cy.get(loc.CONTAS.TITLE).should('have.text', 'Contas')
-        cy.get(loc.CONTAS.INPUT_NAME).type('Conta Cypress Update')
+        cy.AcessaMenuConta();
+        cy.get(loc.CONTAS.INPUT_NAME).type('Conta mesmo nome')
         cy.get(loc.CONTAS.BTN_SAVE).click()
-
         cy.get(loc.MESSAGE).should('contain', 'Request failed')
     })
 
-    it.only('Should create a transaction', function () {
-
-        cy.get(loc.HEADER.ICON_HAND$).click()
-        cy.get(loc.MOVEMENT.NAME).type('Conta Teste')
-        cy.get(loc.MOVEMENT.AMOUNT).type(1000)
-        cy.get(loc.MOVEMENT.ENVOLVIDO).type('Test01')
-        cy.get(loc.MOVEMENT.SEL_ACCOUNT).select('Conta Cypress Update')
-        cy.get(loc.MOVEMENT.STATUS).click()
-        cy.get(loc.MOVEMENT.BTN_SAVE).click()
-
-        cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso')
-
-        cy.xpath("(//span[contains(., 'Conta Test')])[1]").should('contain.text', 'Conta Teste')
+    it('Should create a transaction', function () {
+        cy.get(loc.MENU.ICON_HAND$).click();
+        cy.get(loc.MOVEMENT.NAME).type('Conta Teste');
+        cy.get(loc.MOVEMENT.AMOUNT).type(1000);
+        cy.get(loc.MOVEMENT.ENVOLVIDO).type('Test01');
+        cy.get(loc.MOVEMENT.SEL_ACCOUNT).select('Conta para movimentacoes');
+        cy.get(loc.MOVEMENT.STATUS).click();
+        cy.get(loc.MOVEMENT.BTN_SAVE).click();
+        cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso');
+        cy.get(loc.MOVEMENT.MOV_LIST).should('have.length', 7);
+        cy.xpath(loc.MOVEMENT.TEST_MOVIMENT('Conta Teste')).should('contain.text', 'Conta Teste');
     })
 
     it('Should get balance', function () {
-     
-
+        cy.get(loc.MENU.HOME).click();
+        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo')).should('contain', '534,00');
+        cy.get(loc.MENU.ICON_HISTORY).click();
+        cy.xpath(loc.MOVEMENT.ICON_UPDATE('Movimentacao 1, calculo saldo')).click();
+        cy.get(loc.MOVEMENT.DESCRICAO).should('have.value', 'Movimentacao 1, calculo saldo')
+        cy.get(loc.MOVEMENT.STATUS).click();
+        cy.get(loc.MOVEMENT.BTN_SAVE).click();
+        cy.get(loc.MESSAGE).should('contain', 'sucesso');
+        cy.get(loc.MENU.ICON_HAND$).click();
+        cy.get(loc.MENU.HOME).click();
+        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo'), {timeout: 2000}).should('contain', '4.034,00');
     })
 
     it('Should remove a transaction', function () {
-
-        cy.get(':nth-child(3) > .nav-link > .fas').click()
-        cy.xpath("//body/div[@id='root']/div[1]/div[1]/div[2]/div[2]/li[1]/div[1]/div[2]/i[1]").click()
-        
-        cy.get(loc.MESSAGE).should('contain',)
-
+        cy.get(loc.MENU.ICON_HISTORY).click()
+        cy.xpath(loc.MOVEMENT.ICON_DELETE('Movimentacao para extrato')).click();
+        cy.get(loc.MESSAGE).should('contain', 'Movimentação removida com sucesso')
     })
 })
