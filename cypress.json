@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/cypress-io/cypress/develop/cli/schema/cypress.schema.json",
-    "baseUrl": "https://barrigareact.wcaquino.me/",
+    "baseUrl": "https://barrigarest.wcaquino.me",
     "watchForFileChanges": false,
     "experimentalSourceRewriting": true,
     "viewportWidth": 1536,
