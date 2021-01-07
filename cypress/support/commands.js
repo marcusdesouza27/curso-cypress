@@ -133,3 +133,26 @@ Cypress.Commands.add('resetRest', (auth) => {
         headers: { Authorization: `JWT ${auth}` }
     }).its('status').should('be.equal', 200);
 })
+
+Cypress.Commands.add('getIdConta', (auth, nomeconta) => {
+    cy.request({
+        method: 'GET',
+        url: '/contas',
+        headers: { Authorization: `JWT ${auth}` },
+        qs: {
+            nome: nomeconta
+        }
+    }).then(res => {
+        return res.body[0].id
+    })
+})
+
+Cypress.Commands.add('getIdMovement', (auth, nomeMovement) => {
+    cy.request({
+        method: 'GET',
+        url: '/extrato/202101?orderBy=data_pagamento',
+        headers: { Authorization: `JWT ${auth}` },
+    }).then((res) => {
+        return res.body[0].id
+    })
+})

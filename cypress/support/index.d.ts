@@ -14,5 +14,7 @@ declare namespace Cypress {
       loginRest(): Chainable<any>
       getToken(): Chainable<any>
       resetRest(): Chainable<any>
+      getIdConta(): Chainable<any>
+      getIdMovement(): Chainable<any>
     }
   }

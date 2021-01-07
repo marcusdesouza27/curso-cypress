@@ -1,8 +1,9 @@
 {
-    "$schema": "https://raw.githubusercontent.com/cypress-io/cypress/develop/cli/schema/cypress.schema.json",
-    "baseUrl": "https://barrigarest.wcaquino.me",
-    "watchForFileChanges": false,
-    "experimentalSourceRewriting": true,
-    "viewportWidth": 1536,
-    "viewportHeight": 960
+  "$schema": "https://raw.githubusercontent.com/cypress-io/cypress/develop/cli/schema/cypress.schema.json",
+  "baseUrl": "https://barrigarest.wcaquino.me",
+  "watchForFileChanges": false,
+  "experimentalSourceRewriting": true,
+  "viewportWidth": 1536,
+  "viewportHeight": 960,
+  "projectId": "rc4g2a"
 }
