@@ -126,6 +126,7 @@ Cypress.Commands.add('getToken', (user, pass) => {
             return token
         })
 })
+
 Cypress.Commands.add('resetRest', (auth) => {
     cy.request({
         method: 'GET',
@@ -147,7 +148,7 @@ Cypress.Commands.add('getIdConta', (auth, nomeconta) => {
     })
 })
 
-Cypress.Commands.add('getIdMovement', (auth, nomeMovement) => {
+Cypress.Commands.add('getIdMovement', (auth) => {
     cy.request({
         method: 'GET',
         url: '/extrato/202101?orderBy=data_pagamento',
@@ -155,4 +156,12 @@ Cypress.Commands.add('getIdMovement', (auth, nomeMovement) => {
     }).then((res) => {
         return res.body[0].id
     })
+})
+
+Cypress.Commands.add('getSaldoConta', (auth) => {
+        cy.request({
+            method: 'GET',
+            url: '/saldo',
+            headers: { Authorization: `JWT ${auth}` },
+        })
 })

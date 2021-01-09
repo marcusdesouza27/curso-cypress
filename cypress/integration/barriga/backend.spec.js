@@ -102,23 +102,61 @@ describe('Testes de API Rest', () => {
 
     })
 
-    it('Should get balance', function () {
+    it.only('Should get balance', function () {
         cy.getIdConta(token, 'Conta para saldo').then((conta) => {
             cy.request({
                 method: 'GET',
                 url: '/saldo',
                 headers: { Authorization: `JWT ${token}` },
             }).then((res) => {
-                console.log(res)
-                expect(res.status).to.be.equal(200)
-                expect(res.statusText).to.be.equal('OK')
-                expect(res.body[2].conta_id).to.be.equal(conta)
-                expect(res.body[2].saldo).to.be.equal('534.00')
-                expect(res.body[2].conta).to.be.equal('Conta para saldo')
+                let saldo_res = null
+                res.body.forEach(l => {
+                    if (l.conta === 'Conta para saldo') saldo_res = l.saldo
+                });
+                expect(res.status).to.be.equal(200);
+                expect(res.statusText).to.be.equal('OK');
+                expect(saldo_res).to.be.equal('534.00');
             })
         })
     })
 
+    it('Shoul update a transaction', function () {
+        cy.request({
+            method: 'GET',
+            url: "/transacoes",
+            headers: { Authorization: `JWT ${token}` },
+            qs: { descricao: "Movimentacao 1, calculo saldo" }
+        }).then((res) => {
+            console.log(res.body[0])
+            cy.request({
+                method: 'PUT',
+                url: `/transacoes/${res.body[0].id}`,
+                headers: { Authorization: `JWT ${token}` },
+                body: {
+                    status: true,
+                    data_pagamento: Cypress.moment(res.body[0].data_pagamento).format('DD/MM/YYYY'),
+                    data_transacao: Cypress.moment(res.body[0].data_transacao).format('DD/MM/YYYY'),
+                    descricao: res.body[0].descricao,
+                    envolvido: res.body[0].envolvido,
+                    id: res.body[0].id,
+                    usuario_id: res.body[0].usuario_id,
+                    valor: res.body[0].valor,
+                    conta_id: res.body[0].conta_id,
+                },
+                failOnStatusCode: false
+            }).its('status').should('be.equal', 200)
+
+            cy.getIdConta(token, 'Conta para saldo').then((conta) => {
+                cy.getSaldoConta(token).then((res) => {
+                    let saldo_res = null
+                    res.body.forEach(l => {
+                        if (l.conta === 'Conta para saldo') saldo_res = l.saldo
+                    });
+                    expect(saldo_res).to.be.equal('4034.00');
+                })
+            })
+        })
+    })
     it('Should remove a transaction', function () {
         cy.getIdMovement(token, 'Conta para saldo').then((movId) => {
             cy.request({
