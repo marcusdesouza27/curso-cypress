@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 // const { curry } = require("cypress/types/lodash")
-import loc from "./locators"
+
 
 Cypress.Commands.add('ClickAlert', (locator, message) => {
     cy.get(locator).click()
@@ -95,4 +95,73 @@ Cypress.Commands.add('AddMov', () => {
     cy.get(loc.MOVEMENT.BTN_SAVE).click();
     cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso');
     cy.xpath(loc.MOVEMENT.TEST_MOVIMENT('Movimento a confirmar')).should('contain.text', 'Movimento a confirmar');
+})
+
+Cypress.Commands.add('loginRest', (user, pass) => {
+    cy.request({
+        method: 'POST',
+        url: '/signin',
+        body: {
+            email: user,
+            redirecionar: "false",
+            senha: pass
+        }
+    }).then((res) => {
+        cy.log(res.body.token)
+        cy.writeFile('cypress/fixtures/loginRes.json', res.body)
+    })
+})
+
+Cypress.Commands.add('getToken', (user, pass) => {
+    cy.request({
+        method: 'POST',
+        url: '/signin',
+        body: {
+            email: user,
+            redirecionar: "false",
+            senha: pass
+        }
+    }).its('body.token').should('not.be.empty')
+        .then(token => {
+            return token
+        })
+})
+
+Cypress.Commands.add('resetRest', (auth) => {
+    cy.request({
+        method: 'GET',
+        url: '/reset',
+        headers: { Authorization: `JWT ${auth}` }
+    }).its('status').should('be.equal', 200);
+})
+
+Cypress.Commands.add('getIdConta', (auth, nomeconta) => {
+    cy.request({
+        method: 'GET',
+        url: '/contas',
+        headers: { Authorization: `JWT ${auth}` },
+        qs: {
+            nome: nomeconta
+        }
+    }).then(res => {
+        return res.body[0].id
+    })
+})
+
+Cypress.Commands.add('getIdMovement', (auth) => {
+    cy.request({
+        method: 'GET',
+        url: '/extrato/202101?orderBy=data_pagamento',
+        headers: { Authorization: `JWT ${auth}` },
+    }).then((res) => {
+        return res.body[0].id
+    })
+})
+
+Cypress.Commands.add('getSaldoConta', (auth) => {
+        cy.request({
+            method: 'GET',
+            url: '/saldo',
+            headers: { Authorization: `JWT ${auth}` },
+        })
 })

@@ -11,5 +11,10 @@ declare namespace Cypress {
       BarrigaLogin(): Chainable<any>
       AcessaMenuConta(): Chainable<any>
       InserirConta(): Chainable<any>
+      loginRest(): Chainable<any>
+      getToken(): Chainable<any>
+      resetRest(): Chainable<any>
+      getIdConta(): Chainable<any>
+      getIdMovement(): Chainable<any>
     }
   }

@@ -4,7 +4,7 @@ import loc from '../../support/locators'
 
 describe('Testes funcionais', () => {
     before(function () {
-        cy.visit('/')
+        cy.visit('https://barrigareact.wcaquino.me/');
         cy.fixture('login').then((user) => {
             cy.BarrigaLogin(loc.LOGIN.INPUT_USER, loc.LOGIN.INPUT_PASSWORD, loc.LOGIN.BTN_LOGIN, user.login, user.pwd)
             cy.get(loc.MESSAGE).should('contain', 'Bem vindo');
