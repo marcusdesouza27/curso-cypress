@@ -1,30 +1,24 @@
 /// <reference types="cypress" />
-import loc from '../../support/locators'
 
-const { LoginPage } = require("../../pages/login.pages");
-const { HomePage } = require("../../pages/homepage.page");
-const { ContasPage } = require("../../pages/contas.pages")
-const login = new LoginPage();
-const home = new HomePage();
-const contas = new ContasPage();
+import loc from '../../support/locators'
 
 describe('Testes funcionais', () => {
     before(function () {
-        cy.visit('https://barrigareact.wcaquino.me/').then(() => {
-            home.logout();
-        });
+        cy.visit('https://barrigareact.wcaquino.me/');
         cy.fixture('login').then((user) => {
-            login.insertLogin(user.login,user.pwd);
+            cy.BarrigaLogin(loc.LOGIN.INPUT_USER, loc.LOGIN.INPUT_PASSWORD, loc.LOGIN.BTN_LOGIN, user.login, user.pwd)
+            cy.get(loc.MESSAGE).should('contain', 'Bem vindo');
         });
     })
 
     beforeEach(() => {
-        home.resetAll();
+        cy.get(loc.MENU.HOME).click();
+        cy.BarrigaReset(loc.MESSAGE);
     })
 
     it.only('Should create an account', () => {
-        home.verContas();
-        contas.insertConta();
+        cy.AcessaMenuConta();
+        cy.InserirConta('Conta Cypress');
         cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso')
 
     })
@@ -69,7 +63,7 @@ describe('Testes funcionais', () => {
         cy.get(loc.MESSAGE).should('contain', 'sucesso');
         cy.get(loc.MENU.ICON_HAND$).click();
         cy.get(loc.MENU.HOME).click();
-        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo'), { timeout: 2000 }).should('contain', '4.034,00');
+        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo'), {timeout: 2000}).should('contain', '4.034,00');
     })
 
     it('Should remove a transaction', function () {
