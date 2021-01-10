@@ -6,6 +6,7 @@ const icon_settings = '[data-test=menu-settings] > .fas'
 const set_contas = '[href="/contas"]'
 const set_reset = '[href="/reset"]'
 const set_sair = '[href="/logout"]'
+const alerts = '.toast-message'
 
 
 export class HomePage {
@@ -34,5 +35,9 @@ export class HomePage {
     logout() {
         cy.get(icon_settings).click();
         cy.get(set_sair).click();
+    }
+
+    validarAlert(mensagem) {
+        cy.get(alerts).should('contain', mensagem)
     }
 }

@@ -25,7 +25,7 @@ describe('Testes funcionais', () => {
     it.only('Should create an account', () => {
         home.verContas();
         contas.insertConta();
-        cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso')
+        home.validarAlert('Conta inserida com sucesso')
 
     })
 
