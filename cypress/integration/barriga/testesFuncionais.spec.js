@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import loc from '../../support/locators'
 
 const { LoginPage } = require("../../pages/login.pages");
 const { HomePage } = require("../../pages/homepage.page");
@@ -16,19 +15,23 @@ const saldo = new SaldoPage();
 
 describe('Testes funcionais', () => {
     before(function () {
-        cy.visit('https://barrigareact.wcaquino.me/').then(() => {
-            home.logout();
-            home.validarAlert('Até Logo!');
-        });
-        cy.fixture('login').then((user) => {
-            login.insertLogin(user.login,user.pwd);
-            home.validarAlert(`Bem vindo, ${user.name}`);
-        });
+        
     })
 
     beforeEach(() => {
+        cy.visit('https://barrigareact.wcaquino.me/').then(() => {
+            cy.fixture('login').then((user) => {
+                login.insertLogin(user.login, user.pwd);
+                home.validarAlert(`Bem vindo, ${user.name}`);
+            });
+        });
         home.resetAll();
         home.validarAlert("Dados resetados com sucesso");
+    })
+
+    afterEach(() => {
+        home.logout();
+        home.validarAlert('Até Logo!');
     })
 
     it('Should create an account', () => {
