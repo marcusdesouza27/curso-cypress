@@ -50,30 +50,6 @@ Cypress.Commands.add('ConfirmPopup', (ConfirmAlert, AlertPopup, locator) => {
 })
 
 
-Cypress.Commands.add('BarrigaLogin_old', (elUser, elPwd, elBtn, user, password) => {
-    cy.fixture('login').as('barriga').then(() => {
-        cy.get(elUser).type(user)
-        cy.get(elPwd).type(password)
-        cy.get(elBtn).click()
-
-        // cy.get('.toast-close-button').click()
-    })
-})
-Cypress.Commands.add('BarrigaReset', (idpopup) => {
-    cy.get(loc.MENU.SETTINGS).click()
-    cy.get(loc.MENU.RESET).click()
-
-    cy.get(idpopup).should('contain', 'Dados resetados com sucesso')
-    // cy.get('.toast-close-button').click()
-})
-
-Cypress.Commands.add('BarrigaPopUp', (idpopup, popmessage) => {
-    cy.get(idpopup)
-        .should('exist')
-        .and('contain', popmessage)
-    // cy.get('.toast-close-button').click()
-})
-
 Cypress.Commands.add('BarrigaClosePop', () => {
     cy.get('.toast-close-button').click()
 })

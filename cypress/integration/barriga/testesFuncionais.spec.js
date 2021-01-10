@@ -3,78 +3,74 @@ import loc from '../../support/locators'
 
 const { LoginPage } = require("../../pages/login.pages");
 const { HomePage } = require("../../pages/homepage.page");
-const { ContasPage } = require("../../pages/contas.pages")
+const { ContasPage } = require("../../pages/contas.pages");
+const { MovimentacaoPage } = require("../../pages/movimentacao.page");
+const { ExtratoPage } = require("../../pages/extrato.page");
+const { SaldoPage } = require("../../pages/saldo.page");
 const login = new LoginPage();
 const home = new HomePage();
 const contas = new ContasPage();
+const movimentacao = new MovimentacaoPage();
+const extrato = new ExtratoPage();
+const saldo = new SaldoPage();
 
 describe('Testes funcionais', () => {
     before(function () {
         cy.visit('https://barrigareact.wcaquino.me/').then(() => {
             home.logout();
+            home.validarAlert('Até Logo!');
         });
         cy.fixture('login').then((user) => {
             login.insertLogin(user.login,user.pwd);
+            home.validarAlert(`Bem vindo, ${user.name}`);
         });
     })
 
     beforeEach(() => {
         home.resetAll();
+        home.validarAlert("Dados resetados com sucesso");
     })
 
-    it.only('Should create an account', () => {
-        home.verContas();
-        contas.insertConta();
-        home.validarAlert('Conta inserida com sucesso')
-
+    it('Should create an account', () => {
+        home.loadContas();
+        contas.insertConta('Conta Cypress Test');
+        home.validarAlert('Conta inserida com sucesso');
     })
 
     it('Should update an account', function () {
-        cy.AcessaMenuConta();
-        cy.xpath('//td[contains(., "Conta para alterar")]/following-sibling::td/i[@class="far fa-edit"]').click()
-        cy.get(loc.CONTAS.INPUT_NAME).clear()
-        cy.get(loc.CONTAS.INPUT_NAME).type('Conta Cypress Update')
-        cy.get(loc.CONTAS.BTN_SAVE).click()
-        cy.get(loc.MESSAGE).should('contain', 'Conta atualizada com sucesso')
+        home.loadContas();
+        contas.editarConta("Conta para alterar", "Cypress Conta Alterada");
+        home.validarAlert('Conta atualizada com sucesso');
     })
 
     it('Should not create an account with same name', function () {
-        cy.AcessaMenuConta();
-        cy.get(loc.CONTAS.INPUT_NAME).type('Conta mesmo nome')
-        cy.get(loc.CONTAS.BTN_SAVE).click()
-        cy.get(loc.MESSAGE).should('contain', 'Request failed')
+        home.loadContas();
+        contas.insertConta('Conta mesmo nome');
+        home.validarAlert('Request failed');
     })
 
     it('Should create a transaction', function () {
-        cy.get(loc.MENU.ICON_HAND$).click();
-        cy.get(loc.MOVEMENT.NAME).type('Conta Teste');
-        cy.get(loc.MOVEMENT.AMOUNT).type(1000);
-        cy.get(loc.MOVEMENT.ENVOLVIDO).type('Test01');
-        cy.get(loc.MOVEMENT.SEL_ACCOUNT).select('Conta para movimentacoes');
-        cy.get(loc.MOVEMENT.STATUS).click();
-        cy.get(loc.MOVEMENT.BTN_SAVE).click();
-        cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso');
-        cy.get(loc.MOVEMENT.MOV_LIST).should('have.length', 7);
-        cy.xpath(loc.MOVEMENT.TEST_MOVIMENT('Conta Teste')).should('contain.text', 'Conta Teste');
+        home.loadHome();
+        home.loadExtrato();
+        home.loadMovimentacaoForm();
+        movimentacao.inserirDados('Lançamento Cypress', '1000', 'Cypress Tester', 'Conta para movimentacoes');
+        home.validarAlert('Movimentação inserida com sucesso');
+        extrato.validarMovimentacao("Lançamento Cypress");
     })
 
     it('Should get balance', function () {
-        cy.get(loc.MENU.HOME).click();
-        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo')).should('contain', '534,00');
-        cy.get(loc.MENU.ICON_HISTORY).click();
-        cy.xpath(loc.MOVEMENT.ICON_UPDATE('Movimentacao 1, calculo saldo')).click();
-        cy.get(loc.MOVEMENT.DESCRICAO).should('have.value', 'Movimentacao 1, calculo saldo')
-        cy.get(loc.MOVEMENT.STATUS).click();
-        cy.get(loc.MOVEMENT.BTN_SAVE).click();
-        cy.get(loc.MESSAGE).should('contain', 'sucesso');
-        cy.get(loc.MENU.ICON_HAND$).click();
-        cy.get(loc.MENU.HOME).click();
-        cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo'), { timeout: 2000 }).should('contain', '4.034,00');
+        saldo.consultaSado("Conta para saldo", "534,00");
+        home.loadExtrato();
+        extrato.loadMovEdit("Movimentacao 1, calculo saldo")
+        movimentacao.editLancamentoStatus()
+        home.validarAlert('sucesso');
+        home.loadSaldo();
+        saldo.consultaSado("Conta para saldo", "4.034,00");
     })
 
     it('Should remove a transaction', function () {
-        cy.get(loc.MENU.ICON_HISTORY).click()
-        cy.xpath(loc.MOVEMENT.ICON_DELETE('Movimentacao para extrato')).click();
-        cy.get(loc.MESSAGE).should('contain', 'Movimentação removida com sucesso')
+        home.loadExtrato();
+        extrato.removeMovimentacao('Movimentacao para extrato');
+        home.validarAlert('Movimentação removida com sucesso');
     })
 })
