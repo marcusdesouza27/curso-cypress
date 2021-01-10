@@ -16,8 +16,7 @@
     "cypress-xpath": "^1.6.1"
   },
   "devDependencies": {
-    "cypress": "^6.1.0",
+    "cypress": "^6.2.1",
     "cypress-fill-command": "^0.1.0"
-
   }
 }
