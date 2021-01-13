@@ -24,11 +24,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// import { LoginPage } from "../pages/login.pages"
 
 // const { curry } = require("cypress/types/lodash")
 
+Cypress.Commands.add('login', (user, passwd) => {
+    cy.visit('https://barrigareact.wcaquino.me/')
+    cy.get('[data-test=email]').type(user);
+    cy.get('[data-test=passwd]').type(passwd);
+    cy.get('.btn').click();
 
+})
 Cypress.Commands.add('loginRest', (user, pass) => {
     cy.request({
         method: 'POST',
@@ -91,9 +96,9 @@ Cypress.Commands.add('getIdMovement', (auth) => {
 })
 
 Cypress.Commands.add('getSaldoConta', (auth) => {
-        cy.request({
-            method: 'GET',
-            url: '/saldo',
-            headers: { Authorization: `JWT ${auth}` },
-        })
+    cy.request({
+        method: 'GET',
+        url: '/saldo',
+        headers: { Authorization: `JWT ${auth}` },
+    })
 })
